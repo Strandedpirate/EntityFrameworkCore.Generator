@@ -90,6 +90,8 @@ data:
     directory: '{Project.Directory}\Data\Mapping'   # the mapping class output directory
     # include XML documentation
     document: false
+    dateTimeKind: Local|Utc # configures the conversion of date/time columns as UTC in .Net. Default: Local
+    dateTimeDefaultValueGenerator: UtcValueGenerator # defines the default date/time value generator. Default: string.Empty
     # globally indicates how a delete operation is applied to dependent entities in a relationship
     # when the principal is deleted or the relationship is severed.
     # Default: Cascade

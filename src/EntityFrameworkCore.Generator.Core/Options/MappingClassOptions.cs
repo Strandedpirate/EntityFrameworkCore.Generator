@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -82,4 +83,16 @@ public class MappingClassOptions : ClassOptionsBase
     /// </summary>
     [DefaultValue(DeleteBehavior.NoAction)]
     public DeleteBehavior GlobalRelationshipNoActionDeleteBehavior { get; set; }
+
+    /// <summary>
+    /// Specifies the <see cref="System.DateTimeKind"/> to use for date/time columns.
+    /// </summary>
+    [DefaultValue(DateTimeKind.Local)]
+    public DateTimeKind DateTimeKind { get; set; } = DateTimeKind.Local;
+
+    /// <summary>
+    /// The name of the class that will generate default values for date/time columns that have default value defined in the database.
+    /// </summary>
+    [DefaultValue(DateTimeKind.Local)]
+    public string DateTimeDefaultValueGenerator { get; set; } = string.Empty;
 }

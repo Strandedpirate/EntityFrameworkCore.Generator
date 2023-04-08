@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 
@@ -314,6 +315,29 @@ public class MappingClassTemplate : CodeTemplateBase
         {
             CodeBuilder.AppendLine();
             CodeBuilder.Append($".HasDefaultValueSql({property.Default.ToLiteral()})");
+        }
+
+
+        if (property.SystemType == typeof(DateTime))
+        {
+            if (Options.Data.Mapping.DateTimeKind == DateTimeKind.Utc || property.Default?.IndexOf("utc", StringComparison.OrdinalIgnoreCase) > -1)
+            {
+                CodeBuilder.AppendLine();
+                if (property.IsNullable == false)
+                {
+                    CodeBuilder.Append($".HasConversion(t => t, t => DateTime.SpecifyKind(t, DateTimeKind.Utc))");
+                }
+                else
+                {
+                    CodeBuilder.Append($".HasConversion(t => t, t => t == null ? null : DateTime.SpecifyKind(t.GetValueOrDefault(), DateTimeKind.Utc))");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(property.Default) && string.IsNullOrEmpty(Options.Data.Mapping.DateTimeDefaultValueGenerator) == false)
+            {
+                CodeBuilder.AppendLine();
+                CodeBuilder.Append($".HasValueGenerator<{Options.Data.Mapping.DateTimeDefaultValueGenerator}>()");
+            }
         }
 
         switch (property.ValueGenerated)
